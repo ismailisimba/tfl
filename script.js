@@ -32,7 +32,7 @@ window.onload = ()=>{
 
     }else if("buy"){
         console.log("Buy Page");
-        get("tflcarsforsell");
+        console.log(get("tflcarsforsell"))
     }else{
         console.log("default");
     }
@@ -155,6 +155,7 @@ async function sendEmails (data,para){
 
     
 async function get (para=""){
+    //Sconst reqString = "http://127.0.0.1:8080/"+para;
     const reqString = "https://expressongoogle-jzam6yvx3q-ey.a.run.app/"+para;
 
         
@@ -186,10 +187,10 @@ async function get (para=""){
             })
             .then(function(myBlob) {
               
-              //var cloudObject = JSON.parse(myBlob);
+              var cloudObject = JSON.parse(myBlob);
               //window.location.href = "./";
-             // return cloudObject;
-              console.log(myBlob)
+              return cloudObject;
+             // console.log(myBlob)
               
             })
             .catch(function(error) {
