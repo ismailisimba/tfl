@@ -157,8 +157,8 @@ async function sendEmails (data,para){
 
     
 async function get (para=""){
-    const reqString = "http://127.0.0.1:8080/"+para;
-    //const reqString = "https://expressongoogle-jzam6yvx3q-ey.a.run.app/"+para;
+    //const reqString = "http://127.0.0.1:8080/"+para;
+    const reqString = "https://expressongoogle-jzam6yvx3q-ey.a.run.app/"+para;
 
         
     
