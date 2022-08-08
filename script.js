@@ -11,6 +11,8 @@ const obj = {
         }
     ]
   };
+
+  
 window.onload = ()=>{
     console.log(window.location.pathname);
     if(window.location.pathname.includes("appointment")){
