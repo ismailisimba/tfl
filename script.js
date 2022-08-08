@@ -30,6 +30,9 @@ window.onload = ()=>{
             form.addEventListener("submit", processForm);
         }
 
+    }else if("buy"){
+        console.log("Buy Page");
+        get("tflcarsforsell");
     }else{
         console.log("default");
     }
@@ -53,24 +56,48 @@ function processForm(e) {
 
     }else if(window.location.pathname.includes("sell")){
 
-        console.log(e.explicitOriginalTarget["0"].value);
-        console.log(e.explicitOriginalTarget["1"].value);
-        console.log(e.explicitOriginalTarget["2"].value);
-        console.log(e.explicitOriginalTarget["3"].value);
-        console.log(e.explicitOriginalTarget["4"].value);
-        console.log(e.explicitOriginalTarget["5"].value);
-        console.log(e.explicitOriginalTarget["6"].value);
-        console.log(e.explicitOriginalTarget["7"].value);
-        console.log(e.explicitOriginalTarget["8"].value);
-        console.log(e.explicitOriginalTarget["9"].value);
-        console.log(e.explicitOriginalTarget["10"].value);
-        console.log(e.explicitOriginalTarget["11"].value);
-        console.log(e.explicitOriginalTarget["12"].value);
-        console.log(e.explicitOriginalTarget["13"].value);
-        console.log(e.explicitOriginalTarget["14"].value);
+    
+
+        const name =e.explicitOriginalTarget["0"].value+e.explicitOriginalTarget["1"].value;
+        const number =e.explicitOriginalTarget["2"].value;
+        const email =e.explicitOriginalTarget["3"].value;
+        const reg =e.explicitOriginalTarget["4"].value;
+        const year =e.explicitOriginalTarget["5"].value;
+        const make =e.explicitOriginalTarget["6"].value+" : "+e.explicitOriginalTarget["7"].value;
+        const mileage =e.explicitOriginalTarget["8"].value;
+        const color = e.explicitOriginalTarget["9"].value;
+        const transmission = e.explicitOriginalTarget["10"].value;
+        const price = e.explicitOriginalTarget["11"].value;
+        const description = e.explicitOriginalTarget["12"].value;
+        const details = e.explicitOriginalTarget["13"].value;
+        const category ="Sell A Vehicle";
+        const message =`Details<br>
+        Reg Number : ${reg}
+        <br>      
+        Year of Reg : ${year}
+        <br>      
+        Make : ${make}
+        <br>      
+        Mileage : ${mileage}
+        <br>      
+        Color : ${color}
+        <br>      
+        Transmission : ${transmission}
+        <br>      
+        Price : ${price}
+        <br>      
+        Description : ${description}
+        <br>
+        Details : ${details}`;
+
+        obj.params[0].dataObj = {name,email,number,category,message}
+
+
 
     }
-    //sendEmails(obj,"tflappoint");
+
+    console.log(obj);
+    sendEmails(obj,"tflappoint");
     return false;
 }
 
@@ -113,6 +140,56 @@ async function sendEmails (data,para){
               var cloudObject = JSON.parse(myBlob);
               window.location.href = "./";
               return cloudObject;
+              
+            })
+            .catch(function(error) {
+              console.log(error.message);
+            });
+    
+            
+           // document.querySelectorAll(".mycolumns")[1].innerHTML = returnVal;
+            return returnVal; 
+    
+        // tempDiv.innerHTML = Object.entries(localVar.values)[0][1][3] ;  
+    }
+
+    
+async function get (para=""){
+    const reqString = "https://expressongoogle-jzam6yvx3q-ey.a.run.app/"+para;
+
+        
+    
+      var myRequest = new Request(reqString);
+      
+    
+           
+      const returnVal = await fetch(myRequest, {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'omit', // include, *same-origin, omit
+        headers: {
+          //'Content-Type': 'text/txt'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      })
+            .then(function(response) {
+              if (!response.ok) {
+                
+                throw new Error("HTTP error, status = " + response.status);
+                
+              }
+              
+              return response.text();
+            })
+            .then(function(myBlob) {
+              
+              //var cloudObject = JSON.parse(myBlob);
+              //window.location.href = "./";
+             // return cloudObject;
+              console.log(myBlob)
               
             })
             .catch(function(error) {
