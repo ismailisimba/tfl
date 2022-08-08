@@ -12,8 +12,8 @@ const obj = {
     ]
   };
 
-  
-window.onload = ()=>{
+
+window.onload = async()=>{
     console.log(window.location.pathname);
     if(window.location.pathname.includes("appointment")){
         //console.log("Appointment Page");
@@ -34,7 +34,7 @@ window.onload = ()=>{
 
     }else if("buy"){
         console.log("Buy Page");
-        console.log(get("tflcarsforsell"))
+        console.log(await get("tflcarsforsell"))
     }else{
         console.log("default");
     }
