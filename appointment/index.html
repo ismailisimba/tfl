@@ -186,12 +186,15 @@
 <div class="ltn__appointment-area pb-120">
     <div class="container">
         <div class="row">
-            <form action="../appointment" method="post">
+            <form action="../appointment" method="post" id="submit">
                 <label for="id_name">Name:</label><input type="text" name="name" required="" id="id_name">
 <label for="id_email">Email:</label><input type="email" name="email" required="" id="id_email">
 <label for="id_phone">Phone:</label><input type="text" name="phone" required="" id="id_phone">
 <label for="id_offer">Offer:</label><select name="offer" id="id_offer">
-  <option value="1">SERVICE</option>
+  <option value="Service">Service</option>
+  <option value="Buy Car or Motorcyle e.t.c">Buy Car/Motorcycle e.t.c</option>
+  <option value="Sell Car or Motorcyle e.t.c">Sell Car/Motorcycle e.t.c</option>
+  <option value="Buy Spare">Buy Spare</option>
 
 </select>
 <label for="id_message">Message:</label><textarea name="message" cols="40" rows="10" required="" id="id_message"></textarea>
@@ -306,6 +309,8 @@
     <script src="./index_files/plugins.js"></script>
     <!-- Main JS -->
     <script src="./index_files/main.js"></script>
+
+    <script src="../script.js"></script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async="" src="./index_files/js.js"></script>
