@@ -1,3 +1,0 @@
-[submodule "./tflbackend"] 
-  path = ./tflbackend 
-  url = https://github.com/ismailisimba/tflback.git
