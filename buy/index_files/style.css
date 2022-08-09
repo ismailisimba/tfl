@@ -344,6 +344,16 @@ h5, .h5 {
 
 h6, .h6 {
   font-size: 16px; }
+.carmain{
+  cursor: pointer !important;
+}
+.ltn__shop-details-area{
+  display: none;
+  position: relative;
+}
+.dispme{
+  display: block !important;
+}
 
 h1,
 h2,
