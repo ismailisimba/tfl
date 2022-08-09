@@ -48,14 +48,14 @@ window.onload = async()=>{
 
 function processForm(e) {
     if (e.preventDefault) e.preventDefault();
-
+  console.log(e)
 
     if(window.location.pathname.includes("appointment")){
-    const name =e.explicitOriginalTarget["0"].value;
-    const email =e.explicitOriginalTarget["1"].value;
-    const number =e.explicitOriginalTarget["2"].value;
-    const category =e.explicitOriginalTarget["3"].value;
-    const message =e.explicitOriginalTarget["4"].value;
+    const name =e.target["0"].value;
+    const email =e.target["1"].value;
+    const number =e.target["2"].value;
+    const category =e.target["3"].value;
+    const message =e.target["4"].value;
 
 
     
@@ -66,18 +66,18 @@ function processForm(e) {
 
     
 
-        const name =e.explicitOriginalTarget["0"].value+e.explicitOriginalTarget["1"].value;
-        const number =e.explicitOriginalTarget["2"].value;
-        const email =e.explicitOriginalTarget["3"].value;
-        const reg =e.explicitOriginalTarget["4"].value;
-        const year =e.explicitOriginalTarget["5"].value;
-        const make =e.explicitOriginalTarget["6"].value+" : "+e.explicitOriginalTarget["7"].value;
-        const mileage =e.explicitOriginalTarget["8"].value;
-        const color = e.explicitOriginalTarget["9"].value;
-        const transmission = e.explicitOriginalTarget["10"].value;
-        const price = e.explicitOriginalTarget["11"].value;
-        const description = e.explicitOriginalTarget["12"].value;
-        const details = e.explicitOriginalTarget["13"].value;
+        const name =e.target["0"].value+e.target["1"].value;
+        const number =e.target["2"].value;
+        const email =e.target["3"].value;
+        const reg =e.target["4"].value;
+        const year =e.target["5"].value;
+        const make =e.target["6"].value+" : "+e.target["7"].value;
+        const mileage =e.target["8"].value;
+        const color = e.target["9"].value;
+        const transmission = e.target["10"].value;
+        const price = e.target["11"].value;
+        const description = e.target["12"].value;
+        const details = e.target["13"].value;
         const category ="Sell A Vehicle";
         const message =`Details<br>
         Reg Number : ${reg}
