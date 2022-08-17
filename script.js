@@ -163,8 +163,8 @@ async function sendEmails (data,para){
 
     
 async function getMyCars(para=""){
-    const reqString = "http://127.0.0.1:8080/"+para;
-    //const reqString = "https://expressongoogle-jzam6yvx3q-ey.a.run.app/"+para;
+    //const reqString = "http://127.0.0.1:8080/"+para;
+    const reqString = "https://expressongoogle-jzam6yvx3q-ey.a.run.app/"+para;
 
         
     
@@ -216,8 +216,8 @@ async function getMyCars(para=""){
 
 
     async function getMyCarPics(para=""){
-      const reqString = "http://127.0.0.1:8080/tflcarspics?paraOne="+para;
-      //const reqString = "https://expressongoogle-jzam6yvx3q-ey.a.run.app/tflcarspics?paraOne="+para;
+      //const reqString = "http://127.0.0.1:8080/tflcarspics?paraOne="+para;
+      const reqString = "https://expressongoogle-jzam6yvx3q-ey.a.run.app/tflcarspics?paraOne="+para;
   
           
       

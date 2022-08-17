@@ -12621,3 +12621,25 @@ input.cart-plus-minus-box {
 ---------------------------------------------------- */
 
 /*# sourceMappingURL=style.css.map */
+
+/*CUSTOM CSS*/
+
+.maintextytext{
+  padding-left: 120px;
+  padding-right: 64px;
+}
+
+
+@media only screen and (max-width: 600px) {
+  
+  .maintextytext{
+    padding-left: 3px;
+    padding-right: 3px;
+    width: 54% !important;
+  }
+
+  .draggiable{
+    overflow-x: scroll !important;
+  }
+
+}
