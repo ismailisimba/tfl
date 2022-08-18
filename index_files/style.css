@@ -5876,8 +5876,9 @@ ul.wp-block-latest-posts.is-grid.alignwide {
   position: relative;
   z-index: 9; }
   .ltn__slide-animation > * {
-    opacity: 0;
-    visibility: hidden;
+    opacity: 1;
+    transition: all .69s ease-out ;
+    visibility: visible;
     -webkit-animation-name: fadeOutUp;
     animation-name: fadeOutUp; }
     .ltn__slide-animation > *:nth-child(1) {

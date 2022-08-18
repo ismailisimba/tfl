@@ -12,6 +12,7 @@ const obj = {
     ]
   };
   const localVar={};
+  localVar["homeCounter"]=0;
   const prevHTML = document.querySelectorAll(".carsgohere")[0];
   const newHTML = document.querySelectorAll(".ltn__shop-details-area")[0];
   const mom = document.querySelectorAll(".ltn__shop-details-large-img")[0];
@@ -19,7 +20,7 @@ const obj = {
   
 
 window.onload = async()=>{
-    console.log(window.location.pathname);
+    //console.log(window.location.pathname);
     if(window.location.pathname.includes("appointment")){
         //console.log("Appointment Page");
         const form = document.getElementById("submit");
@@ -42,6 +43,7 @@ window.onload = async()=>{
       fillCars(localVar);
       //console.log(localVar);
     }else{
+      homePageFunc();
         console.log("default");
     }
 };
@@ -103,8 +105,6 @@ function processForm(e) {
 
 
     }
-
-    console.log(obj);
     sendEmails(obj,"tflappoint");
     return false;
 }
@@ -418,4 +418,133 @@ function prepareFrame(src) {
   document.body.appendChild(ifrm);
   console.log(ifrm);
   return ifrm.location.href;
+}
+
+
+function homePageFunc(){
+  try{
+    const left = document.querySelectorAll(".leftarrowcust")[0];
+    const right = document.querySelectorAll(".rightarrowcust")[0];
+    const dot1= document.querySelectorAll(".dot1cust")[0];
+    const dot2= document.querySelectorAll(".dot2cust")[0];
+    const dot3= document.querySelectorAll(".dot3cust")[0];
+
+    const arrObj = [{left},{right},{dot1},{dot2},{dot3}];
+
+    arrObj.forEach(obj=>{
+
+      const ele = Object.entries(obj)[0][1];
+      const nameKey = Object.entries(obj)[0][0];
+
+      ele.addEventListener("click",(e)=>{
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        if(nameKey==="dot1"){
+          dot1function();
+        }else if(nameKey==="dot2"){
+        dot2function();
+
+        }else if(nameKey==="dot3"){
+         dot3function();
+
+        }else if(nameKey==="right"){
+          if(localVar.homeCounter==0){
+            dot2function();
+            localVar.homeCounter++;
+          }else if(localVar.homeCounter==1){
+            dot3function();
+            localVar.homeCounter++;
+          }else if(localVar.homeCounter==2){
+            dot1function();
+            localVar.homeCounter=0;
+          }
+        }else if(nameKey==="left"){
+          if(localVar.homeCounter==0){
+            dot3function();
+            localVar.homeCounter++;
+          }else if(localVar.homeCounter==1){
+            dot2function();
+            localVar.homeCounter++;
+          }else if(localVar.homeCounter==2){
+            dot1function();
+            localVar.homeCounter=0;
+          }
+        }else{
+          dot1function();
+        }
+        //console.log({ele,nameKey});
+      })
+      
+    })
+    
+  }
+  catch{e=>{
+    console.log(e)
+  }}
+};
+
+
+function dot1function (){
+  const mom = document.querySelectorAll(".dotmom1")[0];
+  const textChildren = Array.from(document.querySelectorAll(".maintextytext")[0].children);
+  const mom2 = document.querySelectorAll(".dotmom2")[0];
+  const textChildren2 = Array.from(document.querySelectorAll(".maintextytext")[1].children);
+  const mom3 = document.querySelectorAll(".dotmom3")[0];
+  const textChildren3 = Array.from(document.querySelectorAll(".maintextytext")[2].children);
+  mom.style.opacity = "1";
+  mom.style.zIndex = "999";
+  textChildren.forEach(ele=>{ele.style.opacity="1"})
+  mom2.style.opacity = "0";
+  mom2.style.zIndex = "998";
+  textChildren2.forEach(ele=>{ele.style.opacity="0"})
+  mom3.style.opacity = "0";
+  mom3.style.zIndex = "998";
+  textChildren.forEach(ele=>{ele.style.opacity="0"})
+  const momstyle = window.getComputedStyle(mom).getPropertyValue("opacity");
+  //console.log(momstyle);
+}
+
+
+
+function dot3function () {
+  const mom = document.querySelectorAll(".dotmom1")[0];
+  const textChildren = Array.from(document.querySelectorAll(".maintextytext")[0].children);
+  const mom2 = document.querySelectorAll(".dotmom2")[0];
+  const textChildren2 = Array.from(document.querySelectorAll(".maintextytext")[1].children);
+  const mom3 = document.querySelectorAll(".dotmom3")[0];
+  const textChildren3 = Array.from(document.querySelectorAll(".maintextytext")[2].children);
+  mom.style.opacity = "0";
+  mom.style.zIndex = "998";
+  textChildren.forEach(ele=>{ele.style.opacity="0"})
+  mom2.style.opacity = "0";
+  mom2.style.zIndex = "998";
+  textChildren2.forEach(ele=>{ele.style.opacity="0"})
+  mom3.style.opacity = "1";
+  mom3.style.zIndex = "999";
+  textChildren3.forEach(ele=>{ele.style.opacity="1"})
+  const momstyle = window.getComputedStyle(mom).getPropertyValue("opacity");
+  //console.log(momstyle);
+}
+
+
+function dot2function () {
+  const mom = document.querySelectorAll(".dotmom1")[0];
+  const textChildren = Array.from(document.querySelectorAll(".maintextytext")[0].children);
+  const mom2 = document.querySelectorAll(".dotmom2")[0];
+  const textChildren2 = Array.from(document.querySelectorAll(".maintextytext")[1].children);
+  const mom3 = document.querySelectorAll(".dotmom3")[0];
+  const textChildren3 = Array.from(document.querySelectorAll(".maintextytext")[2].children);
+  mom.style.opacity = "0";
+  mom.style.zIndex = "998";
+  textChildren.forEach(ele=>{ele.style.opacity="0"})
+  mom2.style.opacity = "1";
+  mom2.style.zIndex = "999";
+  textChildren2.forEach(ele=>{ele.style.opacity="1"})
+  mom3.style.opacity = "0";
+  mom3.style.zIndex = "998";
+  textChildren3.forEach(ele=>{ele.style.opacity="0"})
+  const momstyle = window.getComputedStyle(mom).getPropertyValue("opacity");
+  //console.log(momstyle);
 }
