@@ -286,8 +286,7 @@ async function  fillCars (cars){
 
 
 function showDetailedCar(e){
-  //e.stopPropagation();
-  //console.log(e);
+
   var path = e.path || (e.composedPath && e.composedPath());
   newHTML.classList.add("dispme");
   //prevHTML.replaceWith(newHTML);
