@@ -12633,3 +12633,12 @@ input.cart-plus-minus-box {
 /*# sourceMappingURL=style.css.map */
 
 
+/*CUSTOM CSS*/
+.carsloading{
+  min-width: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+  font-family: "Rajdhani" !important;
+}

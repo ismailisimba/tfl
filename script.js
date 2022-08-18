@@ -17,12 +17,11 @@ const obj = {
   const newHTML = document.querySelectorAll(".ltn__shop-details-area")[0];
   const mom = document.querySelectorAll(".ltn__shop-details-large-img")[0];
   const kids = document.querySelectorAll(".single-large-img");
+  const carsLoading = document.querySelectorAll(".carsloading")[0];
   
 
 window.onload = async()=>{
-    //console.log(window.location.pathname);
     if(window.location.pathname.includes("appointment")){
-        //console.log("Appointment Page");
         const form = document.getElementById("submit");
         if (form.attachEvent) {
             form.attachEvent("submit", processForm);
@@ -30,7 +29,6 @@ window.onload = async()=>{
             form.addEventListener("submit", processForm);
         }
     }else if(window.location.pathname.includes("sell")){
-        //console.log("Appointment Page");
         const form = document.getElementById("submit");
         if (form.attachEvent) {
             form.attachEvent("submit", processForm);
@@ -41,16 +39,13 @@ window.onload = async()=>{
     }else if(window.location.pathname.includes("buy")){
       localVar["0"] = await getMyCars("tflcarsforsell");
       fillCars(localVar);
-      //console.log(localVar);
     }else{
       homePageFunc();
-        console.log("default");
     }
 };
 
 function processForm(e) {
     if (e.preventDefault) e.preventDefault();
-  console.log(e)
 
     if(window.location.pathname.includes("appointment")){
     const name =e.target["0"].value;
@@ -198,7 +193,6 @@ async function getMyCars(para=""){
               var cloudObject = JSON.parse(myBlob);
               //window.location.href = "./";
               return cloudObject;
-             // console.log(myBlob)
               
             })
             .catch(function(error) {
@@ -251,7 +245,6 @@ async function getMyCars(para=""){
                 var cloudObject = JSON.parse(myBlob);
                 //window.location.href = "./";
                 return cloudObject;
-               // console.log(myBlob)
                 
               })
               .catch(function(error) {
@@ -267,14 +260,15 @@ async function getMyCars(para=""){
 
 
 async function  fillCars (cars){
-  const carContainer = document.querySelectorAll(".carmain");
+  const carContainer = document.querySelectorAll(".carmain")[0];
+  carsLoading.remove();
+  carContainer.remove();
   const carContainerMom = document.querySelectorAll(".carsgohere")[0];
-  carContainer.forEach(ele=>ele.remove());
-  //console.log(carContainer[0]);
-  //console.log(cars["0"]["0"]);
+  
   cars["0"]["0"].forEach(car=>{
     if(car.Type1!=="promo"){
-      const tempEle = carContainer[0].cloneNode(true)
+      const tempEle = carContainer.cloneNode(true);
+      tempEle.style.display = "block";
       tempEle.querySelectorAll(".product-title")[0].innerText = car.BrandType1+" "+car.Name1+"";
       tempEle.querySelectorAll(".product-title")[0].id = car.tagsArray;
       tempEle.querySelectorAll(".fa-car")[0].parentNode.innerText = car.YearOfMake+"";
@@ -293,11 +287,13 @@ async function  fillCars (cars){
 
 function showDetailedCar(e){
   //e.stopPropagation();
-  //console.log(e.path);
+  //console.log(e);
+  var path = e.path || (e.composedPath && e.composedPath());
   newHTML.classList.add("dispme");
-  prevHTML.replaceWith(newHTML);
+  //prevHTML.replaceWith(newHTML);
+  prevHTML.querySelectorAll(".carmain").forEach(ele=>{ele.style.display = "none";}); 
 
-  e.path.forEach(p=>{
+  path.forEach(p=>{
     //console.log(p);
     if(p.classList && p.classList.contains("carmain")){
       carID = p.querySelectorAll(".product-title")[0].id;
@@ -317,7 +313,9 @@ function showDetailedCar(e){
   
 
   document.querySelectorAll(".backbutttoo")[0].addEventListener("click",()=>{
-    newHTML.replaceWith(prevHTML);
+    //newHTML.replaceWith(prevHTML);
+    prevHTML.querySelectorAll(".carmain").forEach(ele=>{ele.style.display = "block";});
+    newHTML.classList.remove("dispme")
     mom.innerHTML = "";
   })
 }
@@ -345,9 +343,6 @@ function reverse(s){
 //one or all
 async function getPicture(id="def"){
    await getMyCarPics(id).then((res)=>{
-    console.log("_______________");
-    console.log(id);
-    console.log(" ");
     const keys = Object.keys(res[0][0]["f0_"]);
     var counter = 1;
     keys.forEach(key=>{
@@ -358,18 +353,12 @@ async function getPicture(id="def"){
             counter++;
           }
         })
-        //console.log(localVar[0][0]);
-        //console.log("localVar");
         res[0][0]["f0_"][key] = JSON.parse(res[0][0]["f0_"][key]);
         const disimg = document.getElementById(id).parentNode.parentNode.querySelectorAll(".product-img")[0].querySelectorAll("img")[0];
         disimg.src= `data:${res[0][0]["f0_"][key].fileInfo.meme};base64,${res[0][0]["f0_"][key].fileData}`;
-        //console.log(res[0][0]["f0_"][key]);
       }
     })
     counter = 1;
-    console.log();
-    console.log("---------------");
-    console.log("  ");
    })
 }
 
@@ -386,17 +375,22 @@ async function getPictures(id="def"){
       })
 
 
-        const kid = kids[0];
+        const kid = kids[0].cloneNode(true);
         
         kids.forEach(ele=>{ele.remove()});
       for(let i =0;i<pics.length;i++){
         const imgclone = kid.cloneNode(true);
-        console.log(v);
+        //console.log(v);
         var disv=JSON.parse(v["Picture"+(i+1)]);
-        console.log(disv);
         imgclone.querySelectorAll("img")[0].src = `data:${disv.fileInfo.meme};base64,${disv.fileData}`;
         imgclone.querySelectorAll("img")[0].parentNode.target = "_blank";
-        imgclone.querySelectorAll("img")[0].parentNode.href = prepareFrame(imgclone.querySelectorAll("img")[0]);
+        imgclone.querySelectorAll("img")[0].parentNode.href =`data:${disv.fileInfo.meme};base64,${disv.fileData}`;// fullImgTab(imgclone.querySelectorAll("img")[0]);
+        imgclone.querySelectorAll("img")[0].addEventListener("click",(e)=>{
+         e.preventDefault();
+          e.stopPropagation();
+          fullImgTab(e.target.src);
+        })
+
 
         //const disimg = document.getElementById(id).parentNode.parentNode.querySelectorAll(".product-img")[0].querySelectorAll("img")[0];
         //disimg.src= `data:${res[0][0]["f0_"][key].fileInfo.meme};base64,${res[0][0]["f0_"][key].fileData}`;
@@ -409,15 +403,11 @@ async function getPictures(id="def"){
 
 
 
-function prepareFrame(src) {
-  var ifrm = document.createElement("iframe");
-  ifrm.innerHTML = src.outerHTML;
-  //ifrm.setAttribute("src", "_blank");
-  ifrm.style.width = "640px";
-  ifrm.style.height = "480px";
-  document.body.appendChild(ifrm);
-  console.log(ifrm);
-  return ifrm.location.href;
+function fullImgTab(imgsrc) {
+  var newTab = window.open();
+  newTab.document.body.innerHTML = `<img src="${imgsrc}" width="69%" height="auto" style="display:block; margin:0 auto;">`;
+
+  return "ifrm.location.href";
 }
 
 
@@ -502,8 +492,6 @@ function dot1function (){
   mom3.style.opacity = "0";
   mom3.style.zIndex = "998";
   textChildren.forEach(ele=>{ele.style.opacity="0"})
-  const momstyle = window.getComputedStyle(mom).getPropertyValue("opacity");
-  //console.log(momstyle);
 }
 
 
@@ -524,8 +512,6 @@ function dot3function () {
   mom3.style.opacity = "1";
   mom3.style.zIndex = "999";
   textChildren3.forEach(ele=>{ele.style.opacity="1"})
-  const momstyle = window.getComputedStyle(mom).getPropertyValue("opacity");
-  //console.log(momstyle);
 }
 
 
@@ -545,6 +531,6 @@ function dot2function () {
   mom3.style.opacity = "0";
   mom3.style.zIndex = "998";
   textChildren3.forEach(ele=>{ele.style.opacity="0"})
-  const momstyle = window.getComputedStyle(mom).getPropertyValue("opacity");
-  //console.log(momstyle);
 }
+
+
