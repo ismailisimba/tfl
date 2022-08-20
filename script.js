@@ -18,6 +18,8 @@ const obj = {
   const mom = document.querySelectorAll(".ltn__shop-details-large-img")[0];
   const kids = document.querySelectorAll(".single-large-img");
   const carsLoading = document.querySelectorAll(".carsloading")[0];
+
+  const serverURL = /*window.location.origin.includes("127.0.0.1")*/false?"http://127.0.0.1:8080/":"https://tflgroup.co.tz/";
   
 
 window.onload = async()=>{
@@ -159,7 +161,7 @@ async function sendEmails (data,para){
     
 async function getMyCars(para=""){
     //const reqString = "http://127.0.0.1:8080/"+para;
-    const reqString = "https://expressongoogle-jzam6yvx3q-ey.a.run.app/"+para;
+    const reqString = serverURL+para;
 
         
     
@@ -211,7 +213,7 @@ async function getMyCars(para=""){
 
     async function getMyCarPics(para=""){
       //const reqString = "http://127.0.0.1:8080/tflcarspics?paraOne="+para;
-      const reqString = "https://expressongoogle-jzam6yvx3q-ey.a.run.app/tflcarspics?paraOne="+para;
+      const reqString = serverURL+"tflcarspics?paraOne="+para;
   
           
       
