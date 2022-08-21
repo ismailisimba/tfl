@@ -42,7 +42,8 @@ window.onload = async()=>{
       localVar["0"] = await getMyCars("tflcarsforsell");
       fillCars(localVar);
     }else{
-      homePageFunc();
+      localVar["0"] = await getMyCars("tflcarsforsell");
+      homePageFunc(localVar);
     }
 };
 
@@ -412,7 +413,7 @@ function fullImgTab(imgsrc) {
 }
 
 
-function homePageFunc(){
+async function homePageFunc(disVar){
   try{
     const left = document.querySelectorAll(".leftarrowcust")[0];
     const right = document.querySelectorAll(".rightarrowcust")[0];
@@ -469,6 +470,36 @@ function homePageFunc(){
       })
       
     })
+
+
+          
+const getPromoPicture=async()=>{
+  //console.log(car);   
+  await fetchingPromoPic().then((res)=>{
+    for(let i=0;i<localVar[0][0].length;i++){
+      if(localVar[0][0][i].Type1==="promo"){
+        console.log(localVar[0][0][i]);
+        document.querySelectorAll(".promosubtit")[0].innerText =`//${localVar[0][0][i].Name1}//`;
+        document.querySelectorAll(".promotit")[0].innerText =`${localVar[0][0][i].BrandType1}`;
+        console.log(res);
+        const img = JSON.parse(res[0][0].Picture1);
+        document.querySelectorAll(".call-to-img img")[0].src=`data:${img.fileInfo.meme};base64,${img.fileData}`;
+        break;
+      }
+    }
+   })}
+
+
+   await getPromoPicture();
+
+
+
+
+
+
+
+    console.log(disVar);
+    
     
   }
   catch{e=>{
@@ -478,6 +509,9 @@ function homePageFunc(){
 
 
 function dot1function (){
+  document.querySelectorAll(".dot1cust")[0].style.backgroundColor ="#e2bf14";
+  document.querySelectorAll(".dot2cust")[0].style.backgroundColor ="#c0c0c0";
+  document.querySelectorAll(".dot3cust")[0].style.backgroundColor ="#c0c0c0";
   const mom = document.querySelectorAll(".dotmom1")[0];
   const textChildren = Array.from(document.querySelectorAll(".maintextytext")[0].children);
   const mom2 = document.querySelectorAll(".dotmom2")[0];
@@ -498,6 +532,9 @@ function dot1function (){
 
 
 function dot3function () {
+  document.querySelectorAll(".dot1cust")[0].style.backgroundColor ="#c0c0c0";
+  document.querySelectorAll(".dot2cust")[0].style.backgroundColor ="#c0c0c0";
+  document.querySelectorAll(".dot3cust")[0].style.backgroundColor ="#e2bf14";
   const mom = document.querySelectorAll(".dotmom1")[0];
   const textChildren = Array.from(document.querySelectorAll(".maintextytext")[0].children);
   const mom2 = document.querySelectorAll(".dotmom2")[0];
@@ -517,6 +554,9 @@ function dot3function () {
 
 
 function dot2function () {
+  document.querySelectorAll(".dot1cust")[0].style.backgroundColor ="#c0c0c0";
+  document.querySelectorAll(".dot2cust")[0].style.backgroundColor ="#e2bf14";
+  document.querySelectorAll(".dot3cust")[0].style.backgroundColor ="#c0c0c0";
   const mom = document.querySelectorAll(".dotmom1")[0];
   const textChildren = Array.from(document.querySelectorAll(".maintextytext")[0].children);
   const mom2 = document.querySelectorAll(".dotmom2")[0];
@@ -534,4 +574,50 @@ function dot2function () {
   textChildren3.forEach(ele=>{ele.style.opacity="0"})
 }
 
+async function fetchingPromoPic(){
+  const reqString = "http://127.0.0.1:8080/tflpromopic";
 
+      
+  
+    var myRequest = new Request(reqString);
+    
+  
+         
+    const returnVal = await fetch(myRequest, {
+      method: 'GET', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'omit', // include, *same-origin, omit
+      headers: {
+        //'Content-Type': 'text/txt'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    })
+          .then(function(response) {
+            if (!response.ok) {
+              
+              throw new Error("HTTP error, status = " + response.status);
+              
+            }
+            
+            return response.text();
+          })
+          .then(function(myBlob) {
+            
+            var cloudObject = JSON.parse(myBlob);
+            //window.location.href = "./";
+            return cloudObject;
+            
+          })
+          .catch(function(error) {
+            console.log(error.message);
+          });
+  
+          
+         // document.querySelectorAll(".mycolumns")[1].innerHTML = returnVal;
+          return returnVal; 
+  
+      // tempDiv.innerHTML = Object.entries(localVar.values)[0][1][3] ;  
+  }
