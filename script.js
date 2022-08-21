@@ -19,7 +19,7 @@ const obj = {
   const kids = document.querySelectorAll(".single-large-img");
   const carsLoading = document.querySelectorAll(".carsloading")[0];
 
-  const serverURL = /*window.location.origin.includes("127.0.0.1")*/false?"http://127.0.0.1:8080/":"https://tflgroup.co.tz/";
+  const serverURL = window.location.origin.includes("127.0.0.1")?"http://127.0.0.1:8080/":"https://tflgroup.co.tz/";
   
 
 window.onload = async()=>{
@@ -38,10 +38,43 @@ window.onload = async()=>{
             form.addEventListener("submit", processForm);
         }
 
-    }else if(window.location.pathname.includes("buy")){
+    }else if(window.location.href.includes("buy/?car=")){
+      const searchTerm = window.location.href.split("=")[1];
+      localVar["0"] = await getMyCars("tflcarsforsell");
+      const tempArr = [[[]]];
+
+      if(searchTerm==="bikes"){
+        for(let i=0;i<localVar[0][0].length;i++){
+          if(localVar[0][0][i].Type1==="bikemoto"){
+            tempArr[0][0].push(localVar[0][0][i])
+          }
+        }
+        fillCars(tempArr)
+      }else if(searchTerm==="hunter"){
+        for(let i=0;i<localVar[0][0].length;i++){
+          if(localVar[0][0][i].Name1.includes("hunter")||localVar[0][0][i].Name1.includes("Hunter")){
+            tempArr[0][0].push(localVar[0][0][i])
+          }
+        }
+        fillCars(tempArr)
+      }else if(searchTerm==="xpulse"){
+        for(let i=0;i<localVar[0][0].length;i++){
+          if(localVar[0][0][i].Name1.includes("xpulse")||localVar[0][0][i].Name1.includes("Xpulse")||localVar[0][0][i].Name1.includes("pulse")||localVar[0][0][i].Name1.includes("Pulse")){
+            tempArr[0][0].push(localVar[0][0][i])
+          }
+        }
+        fillCars(tempArr)
+      }
+      
+      console.log(localVar);
+      //fillCars(localVar);
+    }else if(window.location.href.includes("?car=")!==true&&window.location.pathname.includes("buy")){
+      console.log(window.location.href);
+      console.log(window.location.href.includes("car="));
       localVar["0"] = await getMyCars("tflcarsforsell");
       fillCars(localVar);
     }else{
+      console.log("me")
       localVar["0"] = await getMyCars("tflcarsforsell");
       homePageFunc(localVar);
     }
@@ -161,12 +194,8 @@ async function sendEmails (data,para){
 
     
 async function getMyCars(para=""){
-    //const reqString = "http://127.0.0.1:8080/"+para;
-    const reqString = serverURL+para;
-
-        
     
-      var myRequest = new Request(reqString);
+      var myRequest = new Request(serverURL+para);
       
     
            
@@ -213,12 +242,7 @@ async function getMyCars(para=""){
 
 
     async function getMyCarPics(para=""){
-      //const reqString = "http://127.0.0.1:8080/tflcarspics?paraOne="+para;
-      const reqString = serverURL+"tflcarspics?paraOne="+para;
-  
-          
-      
-        var myRequest = new Request(reqString);
+        var myRequest = new Request(serverURL+"tflcarspics?paraOne="+para);
         
       
              
@@ -274,9 +298,9 @@ async function  fillCars (cars){
       tempEle.style.display = "block";
       tempEle.querySelectorAll(".product-title")[0].innerText = car.BrandType1+" "+car.Name1+"";
       tempEle.querySelectorAll(".product-title")[0].id = car.tagsArray;
-      tempEle.querySelectorAll(".fa-car")[0].parentNode.innerText = car.YearOfMake+"";
-      tempEle.querySelectorAll(".fa-cog")[0].parentNode.innerText = car.TransmissionType+"";
-      tempEle.querySelectorAll(".fa-road")[0].parentNode.innerText = car.Mileage+"";
+      tempEle.querySelectorAll(".fa-car")[0].parentNode.querySelectorAll("span")[0].innerText = car.YearOfMake+"";
+      tempEle.querySelectorAll(".fa-cog")[0].parentNode.querySelectorAll("span")[0].innerText = car.TransmissionType+"";
+      tempEle.querySelectorAll(".fa-road")[0].parentNode.querySelectorAll("span")[0].innerText = commaSep(car.Mileage)+" km";
       tempEle.querySelectorAll(".product-price")[0].querySelectorAll("span")[0].innerText = "TZS "+commaSep(car.PriceTZS);
       tempEle.addEventListener("click",showDetailedCar);
       getPicture(car.tagsArray);
@@ -301,6 +325,7 @@ function showDetailedCar(e){
       carID = p.querySelectorAll(".product-title")[0].id;
       for(let i=0;i<localVar["0"]["0"].length;i++){
         if (localVar["0"]["0"][i].tagsArray===carID){
+          console.log(localVar["0"]["0"][i]);
           getPictures(localVar["0"]["0"][i].tagsArray);
           document.querySelectorAll(".carfeat")[0].innerText = localVar["0"]["0"][i].AmenetiesArray;
           document.querySelectorAll(".cartit")[0].innerText = localVar["0"]["0"][i].BrandType1+" "+localVar["0"]["0"][i].Name1;
@@ -311,6 +336,7 @@ function showDetailedCar(e){
     }else{
     }
   })
+  window.scrollTo(0,369);
 
   
 
@@ -348,14 +374,14 @@ async function getPicture(id="def"){
     const keys = Object.keys(res[0][0]["f0_"]);
     var counter = 1;
     keys.forEach(key=>{
-      if(res[0][0]["f0_"][key]!==null&&res[0][0]["f0_"][key]!=="null"){
+      if(res[0][0]["f0_"][key]!==null&&res[0][0]["f0_"][key]!=="null"&&res[0][0]["f0_"][key].length>1){
         localVar[0][0].forEach(v=>{
           if(v.tagsArray===id){
             v["Picture"+counter] = res[0][0]["f0_"][key];
             counter++;
           }
         })
-        res[0][0]["f0_"][key] = JSON.parse(res[0][0]["f0_"][key]);
+        res[0][0]["f0_"][key] = res[0][0]["f0_"][key].length>1? JSON.parse(res[0][0]["f0_"][key]):"";
         const disimg = document.getElementById(id).parentNode.parentNode.querySelectorAll(".product-img")[0].querySelectorAll("img")[0];
         disimg.src= `data:${res[0][0]["f0_"][key].fileInfo.meme};base64,${res[0][0]["f0_"][key].fileData}`;
       }
@@ -575,11 +601,9 @@ function dot2function () {
 }
 
 async function fetchingPromoPic(){
-  const reqString = "http://127.0.0.1:8080/tflpromopic";
 
-      
   
-    var myRequest = new Request(reqString);
+    var myRequest = new Request(serverURL+"tflpromopic");
     
   
          

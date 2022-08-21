@@ -346,7 +346,48 @@ h6, .h6 {
   font-size: 16px; }
 .carmain{
   cursor: pointer !important;
+  max-height: 378px !important;
 }
+.product-info-brief span{
+  font-weight: 600;
+  letter-spacing: .69px;
+  font-size: 13px;
+}
+.single-large-img{
+  max-width: 110% !important;
+}
+
+.backbutttoo{
+  width: 32px;
+  cursor: pointer;
+  margin: 9px 3px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 1px 1.5px 3px 1.3px black;
+  box-sizing: border-box;
+}
+
+.backbutttoo:hover{
+  background-color: #e2bf14;
+  box-shadow: 0px .69px 1px 1px black;
+}
+
+.product-info-brief ul li{
+  display: flex !important;
+  flex-flow: column !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-evenly !important;
+  font-size: 12px;
+}
+
+.carmain .product-img img{
+  max-height: 138px;
+  min-height: 138px;
+  height: 138px;
+  overflow: hidden;
+}
+
 .ltn__shop-details-area{
   display: none;
   position: relative;
@@ -12642,3 +12683,11 @@ input.cart-plus-minus-box {
   align-items: center;
   font-family: "Rajdhani" !important;
 }
+.make{
+  background-image: url("../../images/birth.png") !important;
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+
