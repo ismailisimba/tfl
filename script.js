@@ -19,7 +19,7 @@ const obj = {
   const kids = document.querySelectorAll(".single-large-img");
   const carsLoading = document.querySelectorAll(".carsloading")[0];
 
-  const serverURL = window.location.origin.includes("127.0.0.1")?"http://127.0.0.1:8080/":"https://expressongoogle-jzam6yvx3q-ez.a.run.app/";
+  const serverURL = window.location.origin.includes("127.0.0.1false")?"http://127.0.0.1:8080/":"https://expressongoogle-jzam6yvx3q-ez.a.run.app/";
   
 
 window.onload = async()=>{
