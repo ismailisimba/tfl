@@ -12630,6 +12630,54 @@ input.cart-plus-minus-box {
   padding-right: 64px;
 }
 
+.top-back-container{
+  position: relative;
+  top: 0;
+  
+          left: 0;
+          width: 100%;
+          height: auto;
+overflow-x: hidden;
+
+  
+}
+
+
+.top-big-back {
+
+  display: block;
+  position: relative;
+  
+
+
+  height: auto;
+  
+  margin: 0;
+
+  box-sizing: border-box;
+
+  transition: all;
+  
+
+  -webkit-transition-duration: 0.69s;
+  -moz-transition-duration: 0.69s;
+  -o-transition-duration: 0.69s;
+  transition-duration: 0.69s;
+
+
+  -webkit-transition-timing-function: ease-in-out;
+  -moz-transition-timing-function: ease-in-out;
+  -o-transition-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out;
+
+  
+
+}
+
+.promotit{
+  font-size: 36px !important;
+}
+
 
 @media only screen and (max-width: 600px) {
   

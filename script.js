@@ -11,6 +11,8 @@ const obj = {
         }
     ]
   };
+
+  var indexY = 0;
   const localVar={};
   localVar["homeCounter"]=0;
   const prevHTML = document.querySelectorAll(".carsgohere")[0];
@@ -24,6 +26,17 @@ const obj = {
 
 window.onload = async()=>{
     if(window.location.pathname.includes("appointment")){
+      const br = localStorage.getItem('brand')||"";
+      const nm = localStorage.getItem('name')||"";
+      const pr = localStorage.getItem('price')||"";
+      const deets = localStorage.getItem('deets')||"";
+      const message = `I would like to buy this Vehicle from TFL.
+      Brand: ${br},
+      Name: ${nm},
+      Price: ${pr},
+      Details: ${deets}`;
+      document.getElementById("id_message").value = message;
+      
         const form = document.getElementById("submit");
         if (form.attachEvent) {
             form.attachEvent("submit", processForm);
@@ -74,7 +87,7 @@ window.onload = async()=>{
       localVar["0"] = await getMyCars("tflcarsforsell");
       fillCars(localVar);
     }else{
-      console.log("me")
+      //console.log("me")
       localVar["0"] = await getMyCars("tflcarsforsell");
       homePageFunc(localVar);
     }
@@ -303,7 +316,9 @@ async function  fillCars (cars){
       tempEle.querySelectorAll(".fa-road")[0].parentNode.querySelectorAll("span")[0].innerText = commaSep(car.Mileage)+" km";
       tempEle.querySelectorAll(".product-price")[0].querySelectorAll("span")[0].innerText = "TZS "+commaSep(car.PriceTZS);
       tempEle.addEventListener("click",showDetailedCar);
-      getPicture(car.tagsArray);
+      const disimg = tempEle.querySelectorAll(".product-img")[0].querySelectorAll("img")[0];
+      const pic1 = JSON.parse(car.newPics).arr[0].url; 
+      disimg.src= `${pic1}`;
       carContainerMom.appendChild(tempEle);
     }
   });
@@ -315,6 +330,7 @@ async function  fillCars (cars){
 function showDetailedCar(e){
 
   var path = e.path || (e.composedPath && e.composedPath());
+  const kid = kids[0].cloneNode(true);
   newHTML.classList.add("dispme");
   //prevHTML.replaceWith(newHTML);
   prevHTML.querySelectorAll(".carmain").forEach(ele=>{ele.style.display = "none";}); 
@@ -325,8 +341,31 @@ function showDetailedCar(e){
       carID = p.querySelectorAll(".product-title")[0].id;
       for(let i=0;i<localVar["0"]["0"].length;i++){
         if (localVar["0"]["0"][i].tagsArray===carID){
-          console.log(localVar["0"]["0"][i]);
-          getPictures(localVar["0"]["0"][i].tagsArray);
+          const pics = JSON.parse(localVar["0"]["0"][i].newPics);
+          for(let j =0;j<pics.arr.length;j++){
+            const imgclone = kid.cloneNode(true);
+            //console.log(v);
+            imgclone.querySelectorAll("img")[0].src = `${pics.arr[j].url}`;
+            imgclone.querySelectorAll("img")[0].parentNode.target = "_blank";
+            imgclone.querySelectorAll("img")[0].parentNode.href =`${pics.arr[j].url}`;// fullImgTab(imgclone.querySelectorAll("img")[0]);
+            imgclone.querySelectorAll("img")[0].addEventListener("click",(e)=>{
+             e.preventDefault();
+              e.stopPropagation();
+              fullImgTab(e.target.src);
+            })
+            mom.appendChild(imgclone);
+          }
+          document.querySelectorAll(".btn-effect-1")[0].addEventListener("click",(e)=>{
+            e.stopPropagation();
+            e.preventDefault();
+            const urly = new URL(window.location.href.split("/buy")[0]+"/appointment");
+            localStorage.setItem('brand', localVar["0"]["0"][i].BrandType1);
+            localStorage.setItem('name', localVar["0"]["0"][i].Name1);
+            localStorage.setItem('price', commaSep(localVar["0"]["0"][i].PriceTZS));
+            localStorage.setItem('deets', localVar["0"]["0"][i].AmenetiesArray);
+            localStorage.setItem('myCat', 'Tom');
+            window.open(urly);
+          })
           document.querySelectorAll(".carfeat")[0].innerText = localVar["0"]["0"][i].AmenetiesArray;
           document.querySelectorAll(".cartit")[0].innerText = localVar["0"]["0"][i].BrandType1+" "+localVar["0"]["0"][i].Name1;
           document.querySelectorAll(".carprice")[0].innerText = "TZS "+commaSep(localVar["0"]["0"][i].PriceTZS);
@@ -500,20 +539,78 @@ async function homePageFunc(disVar){
 
           
 const getPromoPicture=async()=>{
-  //console.log(car);   
-  await fetchingPromoPic().then((res)=>{
+//console.log(car);   
+  const width = window.screen.width+"px";
+  const divArray = document.querySelectorAll(".top-big-back");
+  const dataArr = [];
+  const hei = {}
+
+
+  const topBackWidth = (window.screen.width*4)+"px";
+  console.log(width)
+  if(window.screen.width<999){
+    hei.ght = "669px";
+  }else{
+    hei.ght = "469px";
+  }
+  
+  const topBackContainer = divArray[0].parentNode;
+
+
+ // document.getElementById("welcome-to-div").innerHTML = "Yes";
+  topBackContainer.style.width = topBackWidth;
+  topBackContainer.style.backgroundColor = "transparent";
+  topBackContainer.style.height = hei.ght;
+  
+  divArray[0].style.width = width;
+  divArray[0].style.position = "absolute";
+  divArray[0].style.top = "0";
+  divArray[0].style.left = "-"+ (window.screen.availWidth)+"px";
+  //divArray[0].style.backgroundImage = `url(${imagesBig[1]})`;
+ // divArray[0].innerHTML = "I am div One!";
+
+  divArray[1].style.width = width;
+  divArray[1].style.position = "absolute";
+  divArray[1].style.top = "0";
+  //divArray[1].style.left = (window.screen.availWidth)+"px";
+  divArray[1].style.left = "0px";
+  //divArray[1].style.backgroundImage = `url(${imagesBig[2]})`;
+ // divArray[1].innerHTML = "I am div Two!";
+
+  divArray[2].style.width = width;
+  divArray[2].style.position = "absolute";
+  divArray[2].style.top = "0";
+  divArray[2].style.left = (window.screen.availWidth)+"px";
+  //divArray[2].style.backgroundImage = `url(${imagesBig[2]})`;
+  //divArray[2].innerHTML = "I am div Three!";
+
+  divArray[3].style.width = width;
+  divArray[3].style.position = "absolute";
+  divArray[3].style.top = "0";
+  divArray[3].style.left = (window.screen.availWidth*2)+"px";
+  divArray[3].style.backgroundColor = "red";
+ // divArray[3].innerHTML = "I am div Four!";
+  
     for(let i=0;i<localVar[0][0].length;i++){
       if(localVar[0][0][i].Type1==="promo"){
-        console.log(localVar[0][0][i]);
-        document.querySelectorAll(".promosubtit")[0].innerText =`//${localVar[0][0][i].Name1}//`;
-        document.querySelectorAll(".promotit")[0].innerText =`${localVar[0][0][i].BrandType1}`;
-        console.log(res);
-        const img = JSON.parse(res[0][0].Picture1);
-        document.querySelectorAll(".call-to-img img")[0].src=`data:${img.fileInfo.meme};base64,${img.fileData}`;
-        break;
+        dataArr.push(localVar[0][0][i]);
       }
     }
-   })}
+
+    //console.log(dataArr)
+    localVar.promoPubArr = dataArr
+    animateBackground();
+
+     
+
+    
+    //document.querySelectorAll(".promosubtit")[0].innerText =`//${localVar[0][0][i].Name1}//`;
+    //document.querySelectorAll(".promotit")[0].innerText =`${localVar[0][0][i].BrandType1}`;
+    //document.querySelectorAll(".call-to-img img")[0].src=`${localVar[0][0][i].newPics}`;
+
+
+
+   }
 
 
    await getPromoPicture();
@@ -524,7 +621,7 @@ const getPromoPicture=async()=>{
 
 
 
-    console.log(disVar);
+    //console.log(disVar);
     
     
   }
@@ -532,6 +629,80 @@ const getPromoPicture=async()=>{
     console.log(e)
   }}
 };
+
+
+
+
+
+
+
+const animateBackground = function() {
+
+  function animateStart () {
+
+   const randIndex = indexY;
+   const arr = localVar.promoPubArr;
+
+   const divs = document.getElementsByClassName("top-big-back");
+ 
+
+
+  
+
+
+        /* Remove code starts here*/
+       // let d = document.getElementById("top-back-container");
+        divs[0].remove();
+       // throwawayNode = null;
+       /* Remove code ends here*/
+
+       divs[0].style.left = "-"+ (window.screen.availWidth)+"px";;
+       divs[1].style.left ="0";
+
+         /* Add code starts here */
+         const sp1 = divs[0].cloneNode(true);
+         //sp1.className = "top-big-back";
+         //sp1.style.backgroundImage = `url(${imagesBig[randIndex]})`;
+          sp1.querySelectorAll(".promosubtit")[0].innerText =`//${arr[randIndex].Name1}//`;
+          sp1.querySelectorAll(".promotit")[0].innerText =`${arr[randIndex].BrandType1}`;
+          sp1.querySelectorAll(".call-to-img img")[0].src=`${arr[randIndex].newPics}`;
+             
+         sp1.style.width = window.screen.availWidth+"px";
+         sp1.style.left = window.screen.availWidth+"px";
+
+         const sp2 = document.getElementById("top-child4");
+         const parentDiv = sp2.parentNode;
+         parentDiv.insertBefore(sp1, sp2);
+         /* Add code ends here */
+
+
+
+       if(indexY<arr.length-1){
+        indexY++
+       }else{
+        indexY = 0;
+       }
+
+   setTimeout(animateStart,5690);
+  }
+
+   animateStart();
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function dot1function (){
@@ -600,48 +771,3 @@ function dot2function () {
   textChildren3.forEach(ele=>{ele.style.opacity="0"})
 }
 
-async function fetchingPromoPic(){
-
-  
-    var myRequest = new Request(serverURL+"tflpromopic");
-    
-  
-         
-    const returnVal = await fetch(myRequest, {
-      method: 'GET', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'omit', // include, *same-origin, omit
-      headers: {
-        //'Content-Type': 'text/txt'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    })
-          .then(function(response) {
-            if (!response.ok) {
-              
-              throw new Error("HTTP error, status = " + response.status);
-              
-            }
-            
-            return response.text();
-          })
-          .then(function(myBlob) {
-            
-            var cloudObject = JSON.parse(myBlob);
-            //window.location.href = "./";
-            return cloudObject;
-            
-          })
-          .catch(function(error) {
-            console.log(error.message);
-          });
-  
-          
-         // document.querySelectorAll(".mycolumns")[1].innerHTML = returnVal;
-          return returnVal; 
-  
-      // tempDiv.innerHTML = Object.entries(localVar.values)[0][1][3] ;  
-  }
